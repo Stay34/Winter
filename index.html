@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Winter</title>
+    <style>
+        body {margin: 0;}
+        #qis {position: relative; height: 100vh; overflow: hidden; background: url('img-w/qis.png') center/cover; }
+        #qis * {position: absolute; background: url('img-w/qar.png') center/contain;}
+    </style>
+</head>
+<body>
+    <div id="qis"></div>
+    <script>
+        const qis = document.getElementById('qis')
+        const arr = []
+        let q = 0
+
+        setInterval(create, 2000)
+        setInterval(move, 40)
+
+        function create() {
+          let id = 'q' + arr.length
+          let size = rand(35, 50)
+          let x = rand(0, innerWidth)
+          let q = -size
+          let speed = rand(15, 25) / 10
+          arr.push({id, x, q, size, speed})
+          qis.innerHTML += `<div id="${id}"></div>`
+        }
+
+        function move() {
+            for(const qar of arr){
+                if(qar){
+                    const elm = document.getElementById(qar.id)
+                    if (q < innerHeight){
+                        qar.q += qar.speed
+                        qar.x += Math.sin(.05 * qar.q) * 3
+                        elm.style.width = qar.size + 'px'
+                        elm.style.height = qar.size + 'px'
+                        elm.style.left = qar.x + 'px'
+                        elm.style.top = qar.q + 'px'
+                    } else {
+                        elm.remove()
+                        let i = arr.indexOf(qar)
+                        delete arr[i]
+                    }
+                }
+            }
+        }
+
+        function rand(min, max){
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+    </script>
+</body>
+</html>
